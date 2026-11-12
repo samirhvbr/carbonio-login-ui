@@ -8,6 +8,8 @@ SPDX-License-Identifier: CC0-1.0
   <h1>carbonio-login-ui</h1>
 </div>
 
+This is the Blue3 fork. See [Blue3 branding](BLUE3-BRANDING.md) for defaults and configuration precedence.
+
 <p align="center">
   <a href="https://github.com/zextras/carbonio-login-ui/graphs/contributors" alt="Contributors">
   <img src="https://img.shields.io/github/contributors/zextras/carbonio-login-ui" /></a>

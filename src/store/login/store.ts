@@ -9,6 +9,7 @@ import create from 'zustand';
 import { LoginConfigStore } from '../../../types/loginConfig';
 
 export const useLoginConfigStore = create<LoginConfigStore>((set) => ({
+	loaded: false,
 	carbonioDomainName: '',
 	isOtpWizardActive: false,
 	loginLogo: undefined,

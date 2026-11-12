@@ -112,6 +112,7 @@ const config = (
 			}),
 			new HtmlWebpackPlugin({
 				inject: true,
+				favicon: './assets/blue3-simbolo.png',
 				template: './src/index.html',
 				filename: './index.html',
 				chunks: ['index'],

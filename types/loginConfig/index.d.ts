@@ -5,6 +5,7 @@
  */
 
 export type LoginConfigStore = {
+	loaded?: boolean;
 	carbonioWebUiDarkMode?: boolean;
 	carbonioWebUiLoginLogo?: string;
 	carbonioWebUiDarkLoginLogo?: string;

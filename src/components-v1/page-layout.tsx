@@ -24,9 +24,11 @@ import { useTranslation, Trans } from 'react-i18next';
 
 import FormSelector from './form-selector';
 import appStore from '../../assets/app-store.svg';
+import logoBlue3Dark from '../../assets/blue3-marca-branca.png';
+import logoBlue3 from '../../assets/blue3-marca.png';
+import faviconBlue3 from '../../assets/blue3-simbolo.png';
 import backgroundImageRetina from '../../assets/carbonio_loginpage-retina.jpg';
 import backgroundImage from '../../assets/carbonio_loginpage.jpg';
-import logoCarbonio from '../../assets/logo-carbonio.png';
 import playStore from '../../assets/play-store.svg';
 import ServerNotResponding from '../components-index/server-not-responding';
 import useScreenMode from '../components-index/use-screen-mode';
@@ -43,6 +45,7 @@ import {
 	CHROME,
 	FIREFOX
 } from '../constants';
+import { useDarkMode } from '../dark-mode/use-dark-mode';
 import { useDarkReaderResultValue } from '../dark-mode/use-dark-reader-result-value';
 import { useGetPrimaryColor } from '../primary-color/use-get-primary-color';
 import { getLoginConfig } from '../services/login-page-services';
@@ -180,10 +183,18 @@ export default function PageLayout({
 	}, []);
 
 	const primaryColor = useGetPrimaryColor();
+	const { darkModeEnabled } = useDarkMode();
+	const defaultLogo = darkModeEnabled ? logoBlue3Dark : logoBlue3;
 	const isSupportedBrowser = browserName === CHROME || browserName === FIREFOX;
 
 	useLayoutEffect(() => {
 		let componentIsMounted = true;
+		const favicon = (document.querySelector("link[rel*='icon']") ||
+			document.createElement('link')) as HTMLLinkElement;
+		favicon.type = 'image/png';
+		favicon.rel = 'icon';
+		favicon.href = faviconBlue3;
+		document.head.appendChild(favicon);
 
 		if (isAdvanced) {
 			getLoginConfig(version, domain, domain)
@@ -208,20 +219,20 @@ export default function PageLayout({
 							_logo.image = res.loginPageLogo;
 							_logo.width = '100%';
 						} else {
-							_logo.image = logoCarbonio;
+							_logo.image = defaultLogo;
 							_logo.width = '221px';
 						}
 
 						if (res.loginPageSkinLogoUrl) {
 							_logo.url = res.loginPageSkinLogoUrl;
 						} else {
-							_logo.url = '';
+							_logo.url = CARBONIO_LOGO_URL;
 						}
 
 						if (res.loginPageTitle) {
 							document.title = res.loginPageTitle;
 						} else {
-							document.title = t('carbonio_authentication', 'Carbonio Authentication');
+							document.title = 'Blue3';
 						}
 
 						if (res.loginPageFavicon) {
@@ -250,6 +261,7 @@ export default function PageLayout({
 								document.getElementsByTagName('head')[0].appendChild(link);
 							}
 							if (res?.carbonioWebUiDarkMode) {
+								if (!res.loginPageLogo) _logo.image = logoBlue3Dark;
 								if (res?.carbonioWebUiDarkLoginBackground) {
 									setBg(res.carbonioWebUiDarkLoginBackground);
 									setIsDefaultBg(false);
@@ -279,24 +291,25 @@ export default function PageLayout({
 						}
 
 						setLogo(_logo);
-						useLoginConfigStore.setState({ loginLogo: _logo });
+						useLoginConfigStore.setState({ loginLogo: _logo, loaded: true });
 					}
 				})
 				.catch(() => {
 					if (componentIsMounted) setServerError(true);
 				});
 		} else {
-			setLogo({ image: logoCarbonio, width: '221px', url: CARBONIO_LOGO_URL });
+			setLogo({ image: defaultLogo, width: '221px', url: CARBONIO_LOGO_URL });
 			useLoginConfigStore.setState({
-				loginLogo: { image: logoCarbonio, width: '221px', url: CARBONIO_LOGO_URL }
+				loaded: true,
+				loginLogo: { image: defaultLogo, width: '221px', url: CARBONIO_LOGO_URL }
 			});
-			document.title = t('carbonio_authentication', 'Carbonio Authentication');
+			document.title = 'Blue3';
 		}
 
 		return (): void => {
 			componentIsMounted = false;
 		};
-	}, [t, version, domain, destinationUrl, isAdvanced, setDomainName]);
+	}, [t, version, domain, destinationUrl, isAdvanced, setDomainName, defaultLogo]);
 
 	const LinkText = (props: { to?: string; children?: React.ReactNode }): ReactElement => {
 		const { to, children } = props || {};

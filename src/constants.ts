@@ -38,7 +38,7 @@ export const darkReaderDynamicThemeFixes = {
 	ignoreInlineStyle: ['.tox-menu *'],
 	disableStyleSheetsProxy: false
 };
-export const CARBONIO_LOGO_URL = 'https://www.zextras.com';
+export const CARBONIO_LOGO_URL = 'https://blue3.com.br';
 export const DARK_READER_VALUES = ['auto', 'enabled', 'disabled'] as const;
 export const SCALING_OPTIONS = [
 	{ value: 75, label: 'xs' },
